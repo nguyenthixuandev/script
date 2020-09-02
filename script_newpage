@@ -37,8 +37,7 @@
     var questionCounter = 0; //Tracks question number
     var selections = []; //Array containing user choices
     var quiz = $('#question'); //Quiz div object
-    var choice = $('#answers');
-    var redirectURL = 'http://songhan.com.vn/test-page';
+    var choice = $('#answers');    
     // Display initial question
     displayNext();
 
@@ -124,7 +123,7 @@
         });
 
     }
-	
+var redirectURL = 'http://songhan.com.vn/test-page';	
     var i = 0;
 	function move() {
 	  if (i == 0) {
@@ -135,8 +134,7 @@
 		function frame() {
 		  if (width >= 50) {
 			clearInterval(id);
-			i = 0;
-			//jQuery("#popup_btn").children('a').find('span').trigger('click');
+			i = 0;			
 			 const param = getParamFromPageURL('utm_campaign');
 			if(param != null){
 				url = redirectURL;

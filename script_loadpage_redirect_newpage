@@ -1,0 +1,222 @@
+<script type="text/javascript">
+(function() {
+    //set up questions
+   var questions = [
+        //Câu hỏi 1
+        {
+        title: "For best results answer as honest as possible...",
+        question: "What time do you normally eat dinner?",
+        choices: ["Between 5-6 p.m.", "Between 6-7 p.m.", "Between 7-8 p.m.", "Overnight"],
+        correctAnswer: 2
+        }, //Câu hỏi 2
+        {
+        title: "When it comes to getting a good night's sleep (7-8 hrs)...",
+        question: "Do you sleep well and wake up refreshed in the morning?",
+        choices: ["Yes, most of the time", "Sometimes. I seem to fall asleep ok, but can't stay asleep", "No, I toss and turn all night most nights", "I have never been on a diet"],
+        correctAnswer: 4
+    }, //Câu hỏi 3
+        {
+        title: "For best results answer as honest as possible...",
+        question: "What time do you normally eat dinner?",
+        choices: ["Between 5-6 p.m.", "Between 6-7 p.m.", "Between 7-8 p.m.", "Overnight"],
+        correctAnswer: 0
+    }, //Câu hỏi 4
+        {
+        title: "For best results answer as honest as possible...",
+        question: "Do you sleep well and wake up refreshed in the morning?",
+        choices: ["Yes, most of the time", "Sometimes. I seem to fall asleep ok, but can't stay asleep", "No, I toss and turn all night most nights", "I have never been on a diet"],
+        correctAnswer: 3
+    },  //Câu hỏi 5
+        {
+        title: "For best results answer as honest as possible...",
+        question: "What time do you normally eat dinner?",
+        choices: ["Between 5-6 p.m.", "Between 6-7 p.m.", "Between 7-8 p.m.", "Overnight"],
+        correctAnswer: 4
+    }];
+
+    var questionCounter = 0; //Tracks question number
+    var selections = []; //Array containing user choices
+    var quiz = $('#question'); //Quiz div object
+    var choice = $('#answers');
+    
+    // Display initial question
+    displayNext();
+
+    // Creates and returns the div that contains the questions and
+    // the answer selections
+    function createQuestionElement(index) {
+        var qElement = $('<div>', {
+            id: 'question'
+        });
+        var title = $('<div id="title">').append(questions[index].title);
+        qElement.append(title);
+
+        var question = $('<p class="question">').append(questions[index].question);
+        qElement.append(question);
+
+        var percent = ((index+1)/questions.length)*100;
+        $('#bar').css('width',percent + '%');
+       // var processbar = ' <div id="barra" class="progress"><div id="bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:'+percent+'%"></div></div>';
+       // qElement.append(processbar);
+        var radioButtons = createRadios(index);
+        qElement.append(radioButtons);
+
+        return qElement;
+    }
+
+    function createCustomQuestionElement(index) {
+        var qElement = $('#answers');
+
+        // var processbar = ' <div id="barra" class="progress"><div id="bar" class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width:'+percent+'%"></div></div>';
+        // qElement.append(processbar);
+        var radioButtons = createRadios(index);
+        qElement.append(radioButtons);
+
+        return qElement;
+    }
+
+    // Creates a list of the answer choices as radio inputs
+    function createRadios(index) {
+        var radioList = $('<ul id="choices">');
+        var item;
+        var input = '';
+        for (var i = 0; i < questions[index].choices.length; i++) {
+            item = $('<li>');
+            input = '<input type="radio" name="answer" class="answer" value=' + i + ' />';
+            input += questions[index].choices[i];
+            item.append(input);
+            radioList.append(item);
+        }
+        return radioList;
+    }
+
+
+    // Reads the user selection and pushes the value to an array
+    function choose() {
+        selections[questionCounter] = +$('input[name="answer"]:checked').val();
+    }
+
+    // Displays next requested element
+    function displayNext() {
+        quiz.fadeOut(function() {
+                if(questionCounter < questions.length ){
+                   $('#choices').remove();
+                    $('#title').text(questions[questionCounter].title);
+                    $('.question').text(questions[questionCounter].question);		
+                    var percent = ((questionCounter+1)/questions.length)*100;
+                    $('#bar').css('width',percent + '%');
+                    //var nextQuestion = createQuestionElement(questionCounter);
+                    var nextQuestion = createCustomQuestionElement(questionCounter);
+
+                    choice.append(nextQuestion).fadeIn();
+                    if (!(isNaN(selections[questionCounter]))) {
+                        $('input[value='+selections[questionCounter]+']').prop('checked', true);
+                    }
+                }else {
+                    displayScore();
+
+                }
+
+        });
+
+    }
+/* BEGIN - New code for loading page before showing popup or redirect to another page */
+var redirectURL = 'http://songhan.com.vn/test-page';
+    var i = 0;
+	function move() {
+	  if (i == 0) {
+		i = 1;
+		var elem = document.getElementById("bar");
+		var width = 1;
+		var id = setInterval(frame, 10);
+		function frame() {
+		  if (width >= 50) {
+			clearInterval(id);
+			i = 0;			
+			 const param = getParamFromPageURL('utm_campaign');
+			if(param != null){
+				url = redirectURL;
+				let new_url = '';
+				if(url.indexOf('/?') < 0){
+					 new_url = url + '/?utm_campaign=' + param
+				}else{
+					 new_url = url + '&utm_campaign=' + param
+				}
+				window.location.replace(new_url);	
+			}else{
+				window.location.replace(redirectURL);			
+			} 
+		  } else {
+			width++;
+			elem.style.width = width + "%";
+		  }
+		}
+	  }
+	}
+	function getParamFromPageURL(t)
+    {
+        var a=new RegExp("[?&]"+t+"=([^&#]*)").exec(window.location.href);
+        return null===a?null:a[1]
+    }
+    // Computes score and returns a paragraph element to be displayed
+	function displayScore() {
+		
+		$('#title').text('Amazing your results');
+			$('.question').text('');
+			$('#answers').text('');
+			$('.line').css('display','none');
+			move();
+					
+    }
+    
+/* END - New code for loading page before showing popup or redirect to another page */
+    $('#my-quiz').on('click', 'li', function () {
+        $('li.active').removeClass('active');
+        $('input:radio', this).prop('checked', true);
+        $(this).addClass('active');
+        choose();
+        questionCounter++;
+        displayNext();
+
+        });
+
+    $(".open").on("click", function() {
+        $(".popup-overlay, .popup-content").addClass("active");
+    });
+
+//removes the "active" class to .popup and .popup-content when the "Close" button is clicked
+    $(".close, .popup-overlay").on("click", function() {
+        $(".popup-overlay, .popup-content").removeClass("active");
+    });
+})();
+
+</script>
+<script type="application/javascript">
+                jQuery(document).ready(function(){
+                    function getParamFromURL(t)
+                    {
+                        var a=new RegExp("[?&]"+t+"=([^&#]*)").exec(window.location.href);
+                        return null===a?null:a[1]
+                    }
+
+                    setTimeout(function(){
+                        if(jQuery('a.tcb-button-link').length > 0){
+                            const param = getParamFromURL('utm_campaign');
+                            if(param != null){
+                                let url = jQuery('a.tcb-button-link').attr('href');
+                                let new_url = '';
+                                if(url.indexOf('/?') < 0){
+                                     new_url = url + '/?tid=' + param
+                                }else{
+                                     new_url = url + '&tid=' + param
+                                }
+
+                                jQuery('a.tcb-button-link').attr('href', new_url);
+                            }
+                        }
+
+                    }, 1000);
+                });
+            </script>
+
+

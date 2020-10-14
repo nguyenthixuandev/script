@@ -1,5 +1,4 @@
 
-</script>
 <script type="application/javascript">
                 jQuery(document).ready(function(){
                     function getParamFromURL(t)
